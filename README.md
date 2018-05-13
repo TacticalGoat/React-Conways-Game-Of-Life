@@ -5,3 +5,6 @@ First react project and probably a *terrible* way to implement conways game of l
 ## To Run
 > npm start
 
+## Live demo
+
+> https://codepen.io/tacticalgoat/pen/BxVYoG
