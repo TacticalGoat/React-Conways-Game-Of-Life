@@ -55,33 +55,7 @@ class Board extends React.Component {
         }
 
     }
-    drawCanvas() {
-        const canvas = this.refs.canvas;
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0,0,this.state.width,this.state.height);
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'square';
-        ctx.strokeStyle = '#c0c0c0';
-        ctx.fillStyle = '#000';
-        for(let row = 0; row < this.props.rows; row++) {
-            for(let col = 0; col < this.props.cols; col++) {
-                let y = row * 12 + 2;
-                let x = col * 12 + 2;
-                let alive = this.state.board[row][col];
-                ctx.beginPath();
-                ctx.rect(x, y, 9, 9);
-                if(alive === true)
-                    ctx.fill();
-                ctx.stroke();
-            }
-        }
-    }
 
-
-
-    componentDidMount() {
-        this.drawCanvas();
-    }
 
     componentDidUpdate() {
         this.drawCanvas();
@@ -107,11 +81,37 @@ class Game extends React.Component {
         }
         this.intervalID = null;
         this.state = {
+            height: this.props.rows * 12,
+            width: this.props.cols * 12,
             board: board,
         }
     }
 
+    componentDidMount() {
+        this.drawCanvas();
+    }
 
+    drawCanvas() {
+        const canvas = this.refs.canvas;
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0,0,this.state.width,this.state.height);
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'square';
+        ctx.strokeStyle = '#c0c0c0';
+        ctx.fillStyle = '#000';
+        for(let row = 0; row < this.props.rows; row++) {
+            for(let col = 0; col < this.props.cols; col++) {
+                let y = row * 12 + 2;
+                let x = col * 12 + 2;
+                let alive = this.state.board[row][col];
+                ctx.beginPath();
+                ctx.rect(x, y, 9, 9);
+                if(alive === true)
+                    ctx.fill();
+                ctx.stroke();
+            }
+        }
+    }
 
     getAliveNeighbours(row, col){
         let rops = [1, 1, -1, -1, 0, 0, 1, -1];
@@ -160,10 +160,11 @@ class Game extends React.Component {
                 board: nState,
             }
         );
+        this.drawCanvas();
     }
 
     start(){
-        this.intervalID = setInterval(() => this.getNextState(), 1000);
+        this.intervalID = setInterval(() => this.getNextState(), 100);
     }
 
     stop(){
@@ -183,7 +184,7 @@ class Game extends React.Component {
 
     handleClick(e) {
         console.log("CLICK");
-        const rect = ReactDOM.findDOMNode(this.refs.board).getBoundingClientRect();
+        const rect = ReactDOM.findDOMNode(this.refs.canvas).getBoundingClientRect();
         let x = e.clientX - rect.left;
         let y = e.clientY - rect.top;
         let row = Math.floor(y / 12);
@@ -193,6 +194,7 @@ class Game extends React.Component {
         this.setState({
             board: board,
         });
+        this.drawCanvas();
     }
     
 
@@ -200,7 +202,7 @@ class Game extends React.Component {
         return(
         <div>
             <div>
-                <Board ref="board" board={this.state.board} rows={this.props.rows} cols={this.props.cols} onClick = {this.handleClick.bind(this)}/>
+                <canvas ref="canvas" width={this.state.width} height={this.state.height} onClick={this.handleClick.bind(this)} />
             </div>
             <button onClick={() => this.getNextState()}> Next </button>
             <button onClick={() => this.start()}> Start </button>
@@ -211,6 +213,6 @@ class Game extends React.Component {
 }
 
 ReactDOM.render(
-    <Game rows="5" cols="5" />,
+    <Game rows="48" cols="100" />,
     document.getElementById('root')
 );
