@@ -1,72 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Stage, Layer, Rect, Text } from 'react-konva';
-import Konva from 'konva';
 import './index.css';
-
-/*function Cell(props) {
-    return(
-        <button className = {props.className}  onClick={props.onClick}/>
-    );
-}*/
-
-function cell(props) {
-    const {ctx, x, y, width, height, alive} = props;
-    console.log(`Drawing ${x},${y}`);
-    if(alive === true)
-        ctx.fillRect(x, y, width, height);
-    ctx.rect(x, y, width, height);
-}
-
-/*class Board extends React.Component {
-    render(){
-        let rows = Array(parseInt(this.props.rows)).fill(true);
-        let cols = Array(parseInt(this.props.cols)).fill(true);
-        return(
-            <ul className="board">
-                {
-                    rows.map((step1, elem1) => {
-                        return(
-                            <li className="board-row">
-                                <ul>
-                                {
-                                    cols.map((step2, elem2) => {
-                                    return(
-                                    <li><Cell className= {this.props.board[elem1][elem2] === true? "cell alive":"cell dead"} onClick={() => this.props.onClick(elem1, elem2)}/></li>);
-                                    })
-                                }
-                                </ul>
-                            </li>
-                        );
-                    })
-                }
-            </ul>
-        );
-    }
-}*/
-
-class Board extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            height: this.props.rows * 12,
-            width: this.props.cols * 12,
-            board: this.props.board
-        }
-
-    }
-
-
-    componentDidUpdate() {
-        this.drawCanvas();
-    }
-
-    render() {
-        return(
-            <canvas ref="canvas" width={this.state.width} height={this.state.height} onClick={this.props.onClick} />
-        );
-    }
-}
 
 class Game extends React.Component {
 
@@ -139,7 +73,6 @@ class Game extends React.Component {
             return false;
         if(noAlive === 3 && !cellAlive)
             return true
-        //console.log(`${row},${col} Alive: ${cellAlive}`)
         return cellAlive
     }
 
@@ -170,17 +103,6 @@ class Game extends React.Component {
     stop(){
         clearInterval(this.intervalID);
     }
-
-    /*handleClick(row, col) {
-        row = parseInt(row)
-        col = parseInt(col)
-        const board = this.state.board.slice();
-        let stat = this.state.board[row][col];
-        board[row][col] = board[row][col]? false : true;
-        this.setState({
-            board: board,
-        });
-    }*/
 
     handleClick(e) {
         console.log("CLICK");

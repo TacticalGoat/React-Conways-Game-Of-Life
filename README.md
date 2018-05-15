@@ -1,10 +1,18 @@
 # React Conways Game of Life
 
-First react project and probably a *terrible* way to implement conways game of life using react.
+Implementation of conways game of life in React.
+
+Master branch uses buttons for cells.
+
+Canvas-Dev branch uses a canvas.
 
 ## To Run
 > npm start
 
 ## Live demo
 
+With buttons:
 > https://codepen.io/tacticalgoat/pen/BxVYoG
+
+With Canvas:
+> https://codepen.io/tacticalgoat/pen/qYMXxe
